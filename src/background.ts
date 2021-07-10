@@ -58,9 +58,14 @@ function handleDownloadPng(dataUri: string) {
   });
 }
 
-function handleDownloadPdf(dataUri: string, width: number, height: number) {
+function handleDownloadPdf(
+  dataUri: string, 
+  width: number,
+  height: number,
+  orientation: "p" | "portrait" | "l" | "landscape" = 'p') {
   let doc = new jsPDF({
-    unit: 'cm'
+    unit: 'cm',
+    orientation
   });
   doc.addImage({
     imageData: dataUri,
@@ -91,7 +96,10 @@ chrome.runtime.onMessage.addListener(
           if (request.fileType === "PNG") {
             handleDownloadPng(request.dataUri);
           } else if (request.fileType === "PDF") {
-            handleDownloadPdf(request.dataUri, 21, 29.7);
+            console.log(request.width);
+            console.log(request.height);
+            console.log(request.orientation);
+            handleDownloadPdf(request.dataUri, request.width, request.height, request.orientation);
           }
         }
         

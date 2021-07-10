@@ -20,10 +20,21 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
   
       if (node) {
+        let originalMargin = node.style.margin;
+        let originalPadding = node.style.padding;
+        let originalBoxShadow = node.style.boxShadow;
 
-        node.style.margin = '';
-        node.style.padding = '';
-        node.style.boxShadow = '';
+        node.style.margin = 'unset';
+        node.style.padding = 'unset';
+        node.style.boxShadow = 'none';
+
+        function resetStyles() {
+          if (node) {
+            node.style.margin = originalMargin;
+            node.style.padding = originalPadding;
+            node.style.boxShadow = originalBoxShadow;
+          }
+        }
 
         domtoimage.toBlob(node, {
           width: node.clientWidth * SCALE,
@@ -33,18 +44,22 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
             transformOrigin: 'top left'
           }
         }).then(function (blob) {
-          var url = URL.createObjectURL(blob);
-          console.log(url);
+          let url = URL.createObjectURL(blob);
+          let orientation = node!.clientWidth > node!.clientHeight ? 'l' : 'p';
+          resetStyles();
           chrome.runtime.sendMessage(
             {
               type: 'DOWNLOAD',
               fileType: msg.fileType,
-              dataUri: url
+              dataUri: url,
+              width: orientation === 'p' ? 21 : 29.7,
+              height: orientation === 'p' ? 29.7 : 21,
+              orientation
             }, function(res) {
               console.log("received response on sending download message: ", res);
             }
           );
-        });
+        },);
       }
     }
   }
