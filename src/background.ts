@@ -24,7 +24,7 @@ function onDownloadAsPng(_: chrome.contextMenus.OnClickData, tab: chrome.tabs.Ta
 
 // Create one test item for each context type.
 let id = chrome.contextMenus.create({
-  title: "Download certificate",
+  title: "Download OpenCerts document(s)",
   contexts: ['page'],
   documentUrlPatterns: [
     "*://legacy.opencerts.io/*"
@@ -33,7 +33,7 @@ let id = chrome.contextMenus.create({
 
 chrome.contextMenus.create({
   parentId: id,
-  title: "as image",
+  title: "as PNG",
   contexts: ['page'],
   documentUrlPatterns: [
     "*://legacy.opencerts.io/*"
@@ -43,7 +43,7 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.create({
   parentId: id,
-  title: "as pdf",
+  title: "as PDF",
   contexts: ['page'],
   documentUrlPatterns: [
     "*://legacy.opencerts.io/*"
@@ -51,7 +51,12 @@ chrome.contextMenus.create({
   onclick: onDownloadAsPdf
 });
 
-function handleDownloadPng(dataUri: string) {
+function handleDownloadPng(
+  dataUri: string, 
+  width: number,
+  height: number,
+  orientation: "p" | "portrait" | "l" | "landscape" = 'p') {
+  console.log("handle download png: ", width, height, orientation);
   chrome.downloads.download({
     url: dataUri,
     filename: "document.png" // Optional
@@ -59,21 +64,33 @@ function handleDownloadPng(dataUri: string) {
 }
 
 function handleDownloadPdf(
-  dataUri: string, 
-  width: number,
-  height: number,
-  orientation: "p" | "portrait" | "l" | "landscape" = 'p') {
+  data: {
+    uri: string
+    orientation: "p" | "portrait" | "l" | "landscape"
+  }[] ) {
+  
+  
   let doc = new jsPDF({
     unit: 'cm',
-    orientation
+    orientation: data[0].orientation
   });
-  doc.addImage({
-    imageData: dataUri,
-    x: 0,
-    y: 0,
-    width,
-    height
-  });
+
+  for (let i = 0; i < data.length; i++) {
+    let orientation = data[i].orientation;
+    if (i !== 0) {
+      doc.addPage(orientation=orientation);
+    }
+
+    console.log(data[i].uri);
+    doc.addImage({
+      imageData: data[i].uri,
+      x: 0,
+      y: 0,
+      width: orientation === 'p' ? 21 : 29.7,
+      height: orientation === 'p' ? 29.7 : 21
+    });
+  }
+
   let pdfBlob = new Blob([ doc.output('blob') ], { type : 'application/pdf'}); 
   let url = URL.createObjectURL(pdfBlob);
   chrome.downloads.download({
@@ -94,12 +111,9 @@ chrome.runtime.onMessage.addListener(
 
         if (request.fileType) {
           if (request.fileType === "PNG") {
-            handleDownloadPng(request.dataUri);
+            handleDownloadPng(request.dataUri, request.width, request.height, request.orientation);
           } else if (request.fileType === "PDF") {
-            console.log(request.width);
-            console.log(request.height);
-            console.log(request.orientation);
-            handleDownloadPdf(request.dataUri, request.width, request.height, request.orientation);
+            handleDownloadPdf(request.data);
           }
         }
         
