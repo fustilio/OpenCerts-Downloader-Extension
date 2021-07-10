@@ -1,6 +1,103 @@
-function polling() {
-  // console.log("polling");
-  setTimeout(polling, 1000 * 30);
+import { jsPDF } from "jspdf";
+
+function handleOpenCerts(tab: chrome.tabs.Tab, fileType: 'PNG' | 'PDF') {
+
+  if (tab.id) {
+    chrome.tabs.sendMessage(
+      tab.id,
+      {
+        type: "OPENCERTS",
+        fileType
+      }
+    );
+  }
 }
 
-polling();
+function onDownloadAsPdf(_: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
+  handleOpenCerts(tab, 'PDF');
+}
+
+function onDownloadAsPng(_: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
+  handleOpenCerts(tab, 'PNG');
+}
+
+
+// Create one test item for each context type.
+let id = chrome.contextMenus.create({
+  title: "Download certificate",
+  contexts: ['page'],
+  documentUrlPatterns: [
+    "*://legacy.opencerts.io/*"
+  ],
+});
+
+chrome.contextMenus.create({
+  parentId: id,
+  title: "as image",
+  contexts: ['page'],
+  documentUrlPatterns: [
+    "*://legacy.opencerts.io/*"
+  ],
+  onclick: onDownloadAsPng
+});
+
+chrome.contextMenus.create({
+  parentId: id,
+  title: "as pdf",
+  contexts: ['page'],
+  documentUrlPatterns: [
+    "*://legacy.opencerts.io/*"
+  ],
+  onclick: onDownloadAsPdf
+});
+
+function handleDownloadPng(dataUri: string) {
+  chrome.downloads.download({
+    url: dataUri,
+    filename: "document.png" // Optional
+  });
+}
+
+function handleDownloadPdf(dataUri: string, width: number, height: number) {
+  let doc = new jsPDF({
+    unit: 'cm'
+  });
+  doc.addImage({
+    imageData: dataUri,
+    x: 0,
+    y: 0,
+    width,
+    height
+  });
+  let pdfBlob = new Blob([ doc.output('blob') ], { type : 'application/pdf'}); 
+  let url = URL.createObjectURL(pdfBlob);
+  chrome.downloads.download({
+    url,
+    filename: "document.pdf" // Optional
+  });
+}
+
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    console.log(sender.tab ?
+      "from a content script:" + sender.tab.url :
+      "from the extension");
+    if (sender.tab) {
+      if ((request.type && request.type === "DOWNLOAD") 
+      ) {
+
+        if (request.fileType) {
+          if (request.fileType === "PNG") {
+            handleDownloadPng(request.dataUri);
+          } else if (request.fileType === "PDF") {
+            handleDownloadPdf(request.dataUri, 21, 29.7);
+          }
+        }
+        
+        sendResponse({ message: "done" });
+      }
+    }
+
+  }
+);

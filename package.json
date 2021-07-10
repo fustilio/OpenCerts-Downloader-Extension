@@ -17,11 +17,14 @@
     "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
   },
   "dependencies": {
+    "dom-to-image": "^2.6.0",
+    "jspdf": "^2.3.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.143",
+    "@types/chrome": "^0.0.146",
+    "@types/dom-to-image": "^2.6.3",
     "@types/jest": "^25.1.4",
     "@types/jquery": "^3.3.33",
     "@types/react": "^17.0.0",

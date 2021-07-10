@@ -66,5 +66,10 @@ type `Ctrl + Shift + B`
 
 Load `dist` directory
 
+Open `chrome://extensions`
+Select `Developer mode`
+`Load unpacked`
+
+
 ## Test
 `npx jest` or `npm run test`
