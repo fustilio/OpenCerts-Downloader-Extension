@@ -1,3 +1,11 @@
+# OpenCerts Downloader Extension
+
+## Motivation
+> [Why can't I print the certificate?](https://www.opencerts.io/faq)
+
+> Printing the certificate discards all the advanced cryptographic protections we have built into OpenCerts, hence printed certificates are not to be considered authentic.
+
+
 # Chrome Extension TypeScript Starter
 
 ![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)

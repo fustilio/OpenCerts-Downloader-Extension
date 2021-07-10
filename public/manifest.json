@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Chrome Extension TypeScript Starter",
-  "description": "Chrome Extension, TypeScript, Visual Studio Code",
-  "version": "1.1",
+  "name": "OpenCerts Downloader Extension",
+  "description": "Download OpenCerts in PNG or PDF",
+  "version": "1.0.0",
 
   "options_ui": {
     "page": "options.html",
@@ -30,6 +30,7 @@
   "permissions": [
     "<all_urls>",
     "downloads",
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ]
 }

@@ -1,13 +1,17 @@
 import domtoimage from 'dom-to-image';
 
-const SCALE = 3;
-
 type PageInfo = {
-  uri: string
-  orientation: "p" | "portrait" | "l" | "landscape"
+  uri: string;
+  orientation: "p" | "portrait" | "l" | "landscape";
 }
 
 async function downloadNode(node: HTMLElement) {
+  let scale = 2;
+  chrome.storage.sync.get(["storedResolution"],
+    (items) => {
+      scale = items.storedResolution;
+    }
+  );
   let orientation = node.clientWidth > node.clientHeight ? 'l' : 'p';
 
   let originalMargin = node.style.margin;
@@ -31,10 +35,10 @@ async function downloadNode(node: HTMLElement) {
   }
 
   let blob = await domtoimage.toBlob(node, {
-    width: node.clientWidth * SCALE,
-    height: node.clientHeight * SCALE,
+    width: node.clientWidth * scale,
+    height: node.clientHeight * scale,
     style: {
-      transform: 'scale(' + SCALE + ')',
+      transform: 'scale(' + scale + ')',
       transformOrigin: 'top left'
     }
   });
@@ -49,9 +53,8 @@ async function downloadNode(node: HTMLElement) {
 }
 
 chrome.runtime.onMessage.addListener(async function (msg, sender, sendResponse) {
-  console.log("received message: ", msg);
-
   if (!sender.tab) {
+    console.log("received message: ", msg);
     if (msg.type === "OPENCERTS") {
       if (!msg.fileType) {
         return;
@@ -65,20 +68,11 @@ chrome.runtime.onMessage.addListener(async function (msg, sender, sendResponse) 
 
       let pages = Array.from(certificate.children[0].children).filter((node) => node.nodeName !== 'P') as HTMLElement[];
 
-      // let articles = document.body.getElementsByTagName('article');
-      // if (articles.length === 0) {
-      //   return;
-      // }
-  
-      // let node = articles[0].parentElement;
-
     
       if (pages.length === 0) {
         return;
       }
       
-
-
       let tasks = [];
 
       for (let i = 0; i < pages.length; i++) {
@@ -112,10 +106,6 @@ chrome.runtime.onMessage.addListener(async function (msg, sender, sendResponse) 
             type: 'DOWNLOAD',
             fileType: msg.fileType,
             data: results
-            // dataUri: uri,
-            // width: orientation === 'p' ? 21 : 29.7,
-            // height: orientation === 'p' ? 29.7 : 21,
-            // orientations: 
           }, function(res) {
             console.log("received response on sending download message: ", res);
           }

@@ -56,7 +56,6 @@ function handleDownloadPng(
   width: number,
   height: number,
   orientation: "p" | "portrait" | "l" | "landscape" = 'p') {
-  console.log("handle download png: ", width, height, orientation);
   chrome.downloads.download({
     url: dataUri,
     filename: "document.png" // Optional
