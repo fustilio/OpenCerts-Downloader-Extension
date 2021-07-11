@@ -1,74 +1,33 @@
 # OpenCerts Downloader Extension
 
+![build](https://github.com/fustilio/OpenCerts-Downloader-Extension/workflows/build/badge.svg)
+
+## Description
+This extension enables you to download a rendered [OpenCerts](https://www.opencerts.io/) certificate, discarding "all the advanced cryptographic protections".
+
+OpenCerts is great but having a rendered copy of the documents is handy, especially when having to upload to employment portals which have yet to catch up to the OpenCerts standard.
+
+
 ## Motivation
-> [Why can't I print the certificate?](https://www.opencerts.io/faq)
+OpenCerts is an "an easy way to check and verify your certificates" but exporting the certificate is challenging.
+
+From the OpenCerts FAQ:  [Why can't I print the certificate?](https://www.opencerts.io/faq)
 
 > Printing the certificate discards all the advanced cryptographic protections we have built into OpenCerts, hence printed certificates are not to be considered authentic.
 
 
-# Chrome Extension TypeScript Starter
-
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
-
-Chrome Extension, TypeScript and Visual Studio Code
-
-## Prerequisites
-
-* [node + npm](https://nodejs.org/) (Current Version)
-
-## Option
-
-* [Visual Studio Code](https://code.visualstudio.com/)
-
-## Includes the following
-
-* TypeScript
-* Webpack
-* React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
-
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
-
 ## Setup
 
+### Install Dependencies
 ```
-npm install
+yarn install
 ```
-
-## Import as Visual Studio Code project
-
-...
-
-## Build
+### Build Project
 
 ```
-npm run build
+yarn build
 ```
-
-## Build in watch mode
-
-### terminal
-
-```
-npm run watch
-```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
+Or start build task with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>
 
 ## Load extension to chrome
 
@@ -77,7 +36,3 @@ Load `dist` directory
 Open `chrome://extensions`
 Select `Developer mode`
 `Load unpacked`
-
-
-## Test
-`npx jest` or `npm run test`
