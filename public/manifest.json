@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
 
-  "name": "OpenCerts Downloader Extension",
+  "name": "OpenCerts Downloader",
   "description": "Download OpenCerts in PNG or PDF",
   "version": "1.0.0",
 
@@ -16,14 +16,14 @@
 
   "content_scripts": [
       {
-          "matches": ["<all_urls>"],
+          "matches": ["*://*.opencerts.io/*"],
           "js": ["js/vendor.js", "js/contentScript.js"],
           "all_frames": true
       }
   ],
 
   "background": {
-    "service_worker": "js/serviceWorker.js",
+    "service_worker": "serviceWorker.js",
     "type": "module"
   },
 
@@ -31,10 +31,6 @@
     "downloads",
     "contextMenus",
     "storage"
-  ],
-  
-  "host_permissions": [
-    "<all_urls>"
   ],
 
   "icons": {

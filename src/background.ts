@@ -18,7 +18,7 @@ chrome.contextMenus.create({
   id: parentId,
   title: "Download OpenCerts document(s)",
   contexts: ["page"],
-  documentUrlPatterns: ["*://legacy.opencerts.io/*"],
+  documentUrlPatterns: ["*://*.opencerts.io/*"],
 });
 
 chrome.contextMenus.create({
@@ -26,7 +26,7 @@ chrome.contextMenus.create({
   parentId: parentId,
   title: "as PNG",
   contexts: ["page"],
-  documentUrlPatterns: ["*://legacy.opencerts.io/*"],
+  documentUrlPatterns: ["*://*.opencerts.io/*"],
 });
 
 chrome.contextMenus.create({
@@ -34,7 +34,7 @@ chrome.contextMenus.create({
   parentId: parentId,
   title: "as PDF",
   contexts: ["page"],
-  documentUrlPatterns: ["*://legacy.opencerts.io/*"],
+  documentUrlPatterns: ["*://*.opencerts.io/*"],
 });
 
 chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData,
