@@ -9,7 +9,7 @@
     "clean": "rimraf dist",
     "test": "npx jest",
     "style": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "compress": "powershell compress-archive -path './dist' -destinationpath '.\\out\\dist.zip' -compressionlevel optimal -Update"
+    "compress": "powershell compress-archive -path './dist' -destinationpath '.\\out\\release.zip' -compressionlevel optimal -Update"
   },
   "author": "",
   "license": "MIT",

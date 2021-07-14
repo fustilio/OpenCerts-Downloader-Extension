@@ -6,31 +6,42 @@ type PageInfo = {
   orientation: "p" | "portrait" | "l" | "landscape";
 };
 
-async function downloadNode(node: HTMLElement) {
+async function stripStyle(node: Element) {
+  let htmlNode = node as HTMLElement;
+ 
+  // htmlNode.style.margin = "unset";
+  // htmlNode.style.padding = "unset";
+  htmlNode.style.boxShadow = "none";
+}
+
+async function resetStripStyle(node: Element) {
+  let htmlNode = node as HTMLElement;
+ 
+  htmlNode.style.boxShadow = "";
+}
+
+
+async function downloadNode({node}: {node: HTMLElement}) {
   let scale = 2;
   chrome.storage.sync.get(["storedResolution"], (items) => {
     scale = items.storedResolution;
   });
+  
+  for (let child of node.children) {
+    stripStyle(child);
+  }
+
+  node.style.maxWidth = "fit-content";
+
   let orientation = node.clientWidth > node.clientHeight ? "l" : "p";
 
-  let originalMargin = node.style.margin;
-  let originalPadding = node.style.padding;
-  let originalBoxShadow = node.style.boxShadow;
+  console.debug(`Detected width: ${node.clientWidth} height: ${node.clientHeight}`);
+  console.debug(`Alternate width: ${node.offsetHeight} height: ${node.offsetHeight}`);
+  console.debug(`Detected orientation: ${orientation}`);
 
-  node.style.margin = "unset";
-  node.style.padding = "unset";
-  node.style.boxShadow = "none";
+  // node.style.width = orientation === "p" ? "21cm" : "29.7cm";
+  // node.style.height = orientation === "p" ? "29.7cm" : "21cm";
 
-  node.style.width = orientation === "p" ? "21cm" : "29.7cm";
-  node.style.height = orientation === "p" ? "29.7cm" : "21cm";
-
-  function resetStyles() {
-    if (node) {
-      node.style.margin = originalMargin;
-      node.style.padding = originalPadding;
-      node.style.boxShadow = originalBoxShadow;
-    }
-  }
 
   let blob = await domtoimage.toBlob(node, {
     width: node.clientWidth * scale,
@@ -41,9 +52,15 @@ async function downloadNode(node: HTMLElement) {
     },
   });
 
+  node.style.maxWidth = "";
+
+  for (let child of node.children) {
+    resetStripStyle(child);
+  }
+
+
   let uri = URL.createObjectURL(blob);
 
-  resetStyles();
   return {
     uri,
     orientation,
@@ -83,7 +100,7 @@ chrome.runtime.onMessage.addListener(async function (
       let tasks = [];
 
       for (let i = 0; i < pages.length; i++) {
-        tasks.push(downloadNode(pages[i]));
+        tasks.push(downloadNode({node:pages[i]}));
       }
 
       let results: {
