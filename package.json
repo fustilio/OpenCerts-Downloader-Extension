@@ -1,27 +1,31 @@
 {
-  "name": "chrome-extension-typescript-starter",
-  "version": "1.0.0",
-  "description": "chrome-extension-typescript-starter",
+  "name": "opencerts-downloader-extension",
+  "version": "1.0.1",
+  "description": "Download OpenCerts in PNG or PDF",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "build": "webpack --config webpack/webpack.prod.js",
     "clean": "rimraf dist",
     "test": "npx jest",
-    "style": "prettier --write \"src/**/*.{ts,tsx}\""
+    "style": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "compress": "powershell compress-archive -path './dist' -destinationpath '.\\out\\release.zip' -compressionlevel optimal -Update"
   },
-  "author": "",
+  "author": "Francis Lee",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
+    "url": "https://github.com/fustilio/OpenCerts-Downloader-Extension.git"
   },
   "dependencies": {
+    "dom-to-image": "^2.6.0",
+    "jspdf": "^2.3.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.143",
+    "@types/chrome": "^0.0.146",
+    "@types/dom-to-image": "^2.6.3",
     "@types/jest": "^25.1.4",
     "@types/jquery": "^3.3.33",
     "@types/react": "^17.0.0",
