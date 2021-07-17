@@ -8,7 +8,7 @@ type PageInfo = {
 
 async function stripStyle(node: Element) {
   let htmlNode = node as HTMLElement;
- 
+
   // htmlNode.style.margin = "unset";
   // htmlNode.style.padding = "unset";
   htmlNode.style.boxShadow = "none";
@@ -16,17 +16,16 @@ async function stripStyle(node: Element) {
 
 async function resetStripStyle(node: Element) {
   let htmlNode = node as HTMLElement;
- 
+
   htmlNode.style.boxShadow = "";
 }
 
-
-async function downloadNode({node}: {node: HTMLElement}) {
+async function downloadNode({ node }: { node: HTMLElement }) {
   let scale = 2;
   chrome.storage.sync.get(["storedResolution"], (items) => {
     scale = items.storedResolution;
   });
-  
+
   for (let child of node.children) {
     stripStyle(child);
   }
@@ -35,13 +34,16 @@ async function downloadNode({node}: {node: HTMLElement}) {
 
   let orientation = node.clientWidth > node.clientHeight ? "l" : "p";
 
-  console.debug(`Detected width: ${node.clientWidth} height: ${node.clientHeight}`);
-  console.debug(`Alternate width: ${node.offsetHeight} height: ${node.offsetHeight}`);
+  console.debug(
+    `Detected width: ${node.clientWidth} height: ${node.clientHeight}`
+  );
+  console.debug(
+    `Alternate width: ${node.offsetHeight} height: ${node.offsetHeight}`
+  );
   console.debug(`Detected orientation: ${orientation}`);
 
   // node.style.width = orientation === "p" ? "21cm" : "29.7cm";
   // node.style.height = orientation === "p" ? "29.7cm" : "21cm";
-
 
   let blob = await domtoimage.toBlob(node, {
     width: node.clientWidth * scale,
@@ -58,7 +60,6 @@ async function downloadNode({node}: {node: HTMLElement}) {
     resetStripStyle(child);
   }
 
-
   let uri = URL.createObjectURL(blob);
 
   return {
@@ -73,7 +74,7 @@ chrome.runtime.onMessage.addListener(async function (
   sendResponse
 ) {
   if (!sender.tab) {
-    console.log("received message: ", msg);
+    console.debug("received message: ", msg);
     if (msg.type === "OPENCERTS") {
       if (!msg.fileType) {
         return;
@@ -100,7 +101,7 @@ chrome.runtime.onMessage.addListener(async function (
       let tasks = [];
 
       for (let i = 0; i < pages.length; i++) {
-        tasks.push(downloadNode({node:pages[i]}));
+        tasks.push(downloadNode({ node: pages[i] }));
       }
 
       let results: {
@@ -109,7 +110,6 @@ chrome.runtime.onMessage.addListener(async function (
       }[] = await Promise.all(tasks);
 
       if (msg.fileType === "PNG") {
-       
         results.forEach((result, index) => {
           const { uri } = result;
           chrome.runtime.sendMessage(
@@ -117,10 +117,10 @@ chrome.runtime.onMessage.addListener(async function (
               type: "DOWNLOAD",
               fileType: msg.fileType,
               uri,
-              filename: `document-page-${index}.png`
+              filename: `document-page-${index}.png`,
             },
             function (res) {
-              console.log(
+              console.debug(
                 "received response on sending download message: ",
                 res
               );
@@ -128,7 +128,6 @@ chrome.runtime.onMessage.addListener(async function (
           );
         });
       } else if (msg.fileType === "PDF") {
-        
         let uri = handleDownloadPdf(results);
         chrome.runtime.sendMessage(
           {
@@ -137,14 +136,16 @@ chrome.runtime.onMessage.addListener(async function (
             uri,
           },
           function (res) {
-            console.log("received response on sending download message: ", res);
+            console.debug(
+              "received response on sending download message: ",
+              res
+            );
           }
         );
       }
     }
   }
 });
-
 
 function handleDownloadPng(
   dataUri: string,
@@ -175,7 +176,6 @@ function handleDownloadPdf(
       doc.addPage((orientation = orientation));
     }
 
-    console.log(data[i].uri);
     doc.addImage({
       imageData: data[i].uri,
       x: 0,

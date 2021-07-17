@@ -11,7 +11,7 @@
     "style": "prettier --write \"src/**/*.{ts,tsx}\"",
     "compress": "powershell compress-archive -path './dist' -destinationpath '.\\out\\release.zip' -compressionlevel optimal -Update"
   },
-  "author": "",
+  "author": "Francis Lee",
   "license": "MIT",
   "repository": {
     "type": "git",

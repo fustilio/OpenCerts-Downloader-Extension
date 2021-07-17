@@ -1,12 +1,12 @@
 # OpenCerts Downloader Extension
 
 ![build](https://github.com/fustilio/OpenCerts-Downloader-Extension/workflows/build/badge.svg) 
+
 [![](https://img.shields.io/chrome-web-store/v/gibpjdabhlfhhgpdkepemfpnndjhhief.svg)](https://chrome.google.com/webstore/detail/opencerts-downloader/gibpjdabhlfhhgpdkepemfpnndjhhief)
+[![](https://img.shields.io/badge/dynamic/json?label=edge%20add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fmjimipdnpjbdgkeeppcaecpljinmilnj)](https://microsoftedge.microsoft.com/addons/detail/opencerts-downloader/mjimipdnpjbdgkeeppcaecpljinmilnj)
 <!-- [![](https://img.shields.io/chrome-web-store/rating/gibpjdabhlfhhgpdkepemfpnndjhhief.svg)](https://chrome.google.com/webstore/detail/opencerts-downloader/gibpjdabhlfhhgpdkepemfpnndjhhief)
 [![](https://img.shields.io/chrome-web-store/users/gibpjdabhlfhhgpdkepemfpnndjhhief.svg)](https://chrome.google.com/webstore/detail/opencerts-downloader/gibpjdabhlfhhgpdkepemfpnndjhhief) -->
-
-<!-- [![](https://img.shields.io/badge/dynamic/json?label=edge%20add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fmjimipdnpjbdgkeeppcaecpljinmilnj)](https://microsoftedge.microsoft.com/addons/detail/opencerts-downloader/mjimipdnpjbdgkeeppcaecpljinmilnj)
-[![](https://img.shields.io/badge/dynamic/json?label=rating&suffix=/5&query=%24.averageRating&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fmjimipdnpjbdgkeeppcaecpljinmilnj)](https://microsoftedge.microsoft.com/addons/detail/opencerts-downloader/mjimipdnpjbdgkeeppcaecpljinmilnj)
+<!-- [![](https://img.shields.io/badge/dynamic/json?label=rating&suffix=/5&query=%24.averageRating&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fmjimipdnpjbdgkeeppcaecpljinmilnj)](https://microsoftedge.microsoft.com/addons/detail/opencerts-downloader/mjimipdnpjbdgkeeppcaecpljinmilnj)
 [![](https://img.shields.io/badge/dynamic/json?label=users&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fmjimipdnpjbdgkeeppcaecpljinmilnj)](https://microsoftedge.microsoft.com/addons/detail/opencerts-downloader/mjimipdnpjbdgkeeppcaecpljinmilnj) -->
 
 ## Disclaimer
@@ -60,3 +60,12 @@ yarn install
 yarn build
 ```
 Or start build task with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>
+
+## Tested Certificates
+
+| Institution | MM-YYYY |
+| :---------: | :-----: |
+|     NUS     | 06-2021 |
+|     NUS     | 06-2020 |
+|     NUS     | 01-2020 |
+|     NUS     | 08-2019 |

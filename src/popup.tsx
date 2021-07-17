@@ -50,8 +50,6 @@ import ReactDOM from "react-dom";
 // };
 
 ReactDOM.render(
-  <React.StrictMode>
-    {/* <Popup /> */}
-  </React.StrictMode>,
+  <React.StrictMode>{/* <Popup /> */}</React.StrictMode>,
   document.getElementById("root")
 );
