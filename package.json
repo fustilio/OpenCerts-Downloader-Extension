@@ -1,6 +1,6 @@
 {
   "name": "opencerts-downloader-extension",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Download OpenCerts in PNG or PDF",
   "main": "index.js",
   "scripts": {
