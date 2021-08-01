@@ -3,7 +3,7 @@
 
   "name": "OpenCerts Downloader",
   "description": "Download OpenCerts in PNG or PDF",
-  "version": "1.1.0",
+  "version": "1.1.3",
 
   "options_ui": {
     "page": "options.html"
